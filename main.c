@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include <inc/tm4c123gh6pm.h>
 #include "driverlib/interrupt.h"
+#include "music.h"
 
 extern volatile enum {LOW, HIGH, DONE} state;  //Set by ISR
 extern volatile unsigned int rising_time;  //Pulse start time
@@ -49,6 +50,7 @@ int main(void) {
     oi_t *sensor_data = oi_alloc();
     oi_init(sensor_data);
 
+    //load_songs();
     timer_init();
     lcd_init();
     adc_init();
@@ -137,20 +139,28 @@ int main(void) {
             //If the character is 'm', stop the bot and do a 180 degree scan
             else if (uart_data == 'm') {
                 oi_setWheels(0, 0);
-                int humans = oneEightyScan();
+                int objs = oneEightyScan();
 
-                //If humans is 1, a survivor is found, if 2, first responders were found
-                if (humans) {
-                    lcd_printf("HUMAN FOUND!");
+                //If objs is 1, a objective is found, if 2, first object was found
+                if (objs) {
+                    lcd_printf("OBJECTIVE FOUND!");
                     lcd_home();
-                    uart_sendStr("\n\rLocated survivor, find first responders to report!");
+                    uart_sendStr("\n\rLocated objective");
                 }
-                else if (humans == 2) {
-                    lcd_printf("Located first responders.");
+                else if (objs == 2) {
+                    lcd_printf("Located object.");
                     lcd_home();
-                    uart_sendStr("\n\rLocated survivor, find first responders to report!");
+                    uart_sendStr("\n\rLocated object");
                 }
             }
+
+//            else if (uart_data == 'o') {
+//                oi_loadSong(IMERPIAL_MARCH, 19, 19, 19);
+//
+//                lcd_printf("EVIL CYBOT!");
+//                lcd_home();
+//                uart_sendStr("\n\rSong Playing");
+//            }
 
             //If any other key is pressed, stop the bot and do nothing
             else {
@@ -215,8 +225,8 @@ void move_backwards(oi_t *sensor) {
 
 int oneEightyScan() {
     int i;
-    int humanType = 0; //0 is no humans, 1 is stranded human, 2 is first responder group
-    int humanCount = 0;
+    int objectTypes = 0; //0 is no object, 1 is single object, 2 is a group of objects
+    int objectCounts = 0;
 
     //Values for displaying data
     char start[] = "Degrees\t\tDistance (cm)\n\r";
@@ -277,25 +287,25 @@ int oneEightyScan() {
         //Calculate the linear width with trig
         objectArr[i].linear_width = objectArr[i].ping_distance * sin((objectArr[i].end_angle - objectArr[i].start_angle) * (3.14 / 180.0));
 
-        //Figure out what type of object was scanned (H is human, T is tree, D is large debris)
+        //Figure out what type of object was scanned (S is small, M is medium, L is large object)
         if (objectArr[i].linear_width <= 11.0 && objectArr[i].linear_width > 6.0) {
-            objectArr[i].type = 'H';
-            humanCount++;
+            objectArr[i].type = 'S';
+            objectCounts++;
         }
         else if (objectArr[i].linear_width <= 14.0 && objectArr[i].linear_width > 11.0) {
-            objectArr[i].type = 'T';
+            objectArr[i].type = 'M';
         }
         else if (objectArr[i].linear_width > 14.0 || objectArr[i].linear_width < 6.0) {
-            objectArr[i].type = 'D';
+            objectArr[i].type = 'L';
         }
     }
 
-    //Figure out if it is a stranded survivor or the first responders
-    if (humanCount >= 3) {
-        humanType = 2;  //First responder group
+    //Figure out if it is a single object or the group of objects
+    if (objectCounts >= 3) {
+        objectTypes = 2;  //Group of objects
     }
-    else if (humanCount < 3 && humanCount > 0) {
-        humanType = 1;  //Stranded survivor
+    else if (objectCounts < 3 && objectCounts > 0) {
+        objectTypes = 1;  //Single object
     }
 
     //Formatting to print out the objects and their values to Putty
@@ -306,5 +316,5 @@ int oneEightyScan() {
         uart_sendStr(layout);
     }
 
-    return humanType;
+    return objectTypes;
 }
