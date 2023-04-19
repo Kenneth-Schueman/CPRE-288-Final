@@ -7,7 +7,10 @@
  *
  *
  */
-// phjones: Note typo??, above was updated on 9/22/2019 not 2018, correct???
+
+/*
+ * @Author Alexander Moeller, Kenneth Schueman, Clayton Reitz, and Nicholas Pinnello.
+ */
 
 
 

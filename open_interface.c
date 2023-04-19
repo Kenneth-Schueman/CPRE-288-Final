@@ -15,6 +15,10 @@
  *      Author: Noah Bergman, Eric Middleton, dmlarson
  */
 
+/*
+ * @Author Alexander Moeller, Kenneth Schueman, Clayton Reitz, and Nicholas Pinnello.
+ */
+
 #include "open_interface.h"
 
 #define OI_OPCODE_START 128

@@ -11,6 +11,10 @@
  *
  */
 
+/*
+ * @Author Alexander Moeller, Kenneth Schueman, Clayton Reitz, and Nicholas Pinnello.
+ */
+
 #ifndef OPEN_INTERFACE_H_
 #define OPEN_INTERFACE_H_
 

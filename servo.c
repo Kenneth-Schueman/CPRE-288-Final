@@ -1,3 +1,7 @@
+/*
+ * @Author Alexander Moeller, Kenneth Schueman, Clayton Reitz, and Nicholas Pinnello.
+ */
+
 #include "Timer.h"
 #include "lcd.h"
 #include "servo.h"

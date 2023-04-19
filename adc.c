@@ -2,6 +2,10 @@
 #include "adc.h"
 #include "Timer.h"
 
+/*
+ * @Author Alexander Moeller, Kenneth Schueman, Clayton Reitz, and Nicholas Pinnello.
+ */
+
 void adc_init(void) {
     SYSCTL_RCGCADC_R |= 0b1;
     SYSCTL_RCGCGPIO_R |= 0b11010;

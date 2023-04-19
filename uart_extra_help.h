@@ -1,10 +1,6 @@
 /*
-*   uart.h
-*   Used to set up the UART [UART1 at 115200]
-*
- * Description: This is file is meant for those that would like a little
- *              extra help with formatting their code.
-*/
+ * @Author Alexander Moeller, Kenneth Schueman, Clayton Reitz, and Nicholas Pinnello.
+ */
 
 #ifndef UART_H_
 #define UART_H_

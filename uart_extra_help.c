@@ -1,7 +1,6 @@
 /*
-*
-*   uart_extra_help.c
-*/
+ * @Author Alexander Moeller, Kenneth Schueman, Clayton Reitz, and Nicholas Pinnello.
+ */
 
 volatile char uart_data;
 volatile char flag;

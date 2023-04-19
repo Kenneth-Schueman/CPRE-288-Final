@@ -1,8 +1,5 @@
 /*
- * timer.h
- *
- *  Created on: Mar 15, 2019
- *      @author Isaac Rex
+ * @Author Alexander Moeller, Kenneth Schueman, Clayton Reitz, and Nicholas Pinnello.
  */
 
 #ifndef TIMER_H_

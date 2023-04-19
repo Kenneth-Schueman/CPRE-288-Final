@@ -1,3 +1,7 @@
+/*
+ * @Author Alexander Moeller, Kenneth Schueman, Clayton Reitz, and Nicholas Pinnello.
+ */
+
 #include "lcd.h"
 #include "ping.h"
 #include "Timer.h"

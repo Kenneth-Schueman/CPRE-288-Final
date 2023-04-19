@@ -28,10 +28,8 @@ int oneEightyScan();
 void move_backwards(oi_t *sensor);
 void move_forward(oi_t *sensor, float millimeters);
 
-/**
- * main.c
- *
- * @author Kyle Springborn, Colin Frank, Hannah Nelson, Taylor Johnson
+/*
+ * @Author Alexander Moeller, Kenneth Schueman, Clayton Reitz, and Nicholas Pinnello.
  */
 
 //Stores all of the information about each object scanned

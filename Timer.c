@@ -6,6 +6,10 @@
  *      Adapted from (and compatible with) Eric Middleton's timer utility
  */
 
+/*
+ * @Author Alexander Moeller, Kenneth Schueman, Clayton Reitz, and Nicholas Pinnello.
+ */
+
 // TODO: Check value of MICROS_PER_TICK
 
 #include "Timer.h"

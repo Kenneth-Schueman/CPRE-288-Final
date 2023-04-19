@@ -1,8 +1,5 @@
 /*
- * lcd.h
- *
- *  Created on: Mar 1, 2016
- *      Author: nbergman
+ * @Author Alexander Moeller, Kenneth Schueman, Clayton Reitz, and Nicholas Pinnello.
  */
 
 #ifndef LCD_H_
