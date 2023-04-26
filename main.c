@@ -50,7 +50,6 @@ int main(void) {
     oi_t *sensor_data = oi_alloc();
     oi_init(sensor_data);
 
-    //load_songs();
     timer_init();
     lcd_init();
     adc_init();
@@ -118,22 +117,56 @@ int main(void) {
 
             //If the character is 'w', drive forward
             if (uart_data == 'w') {
-                oi_setWheels(100, 100);
+                oi_setWheels(250, 250);
             }
 
             //If the character is 's', drive backwards
             else if (uart_data == 's') {
-                oi_setWheels(-100, -100);
+                oi_setWheels(-200, -200);
             }
 
             //If the character is 'a', turn left
             else if (uart_data == 'a') {
-                oi_setWheels(50, -50);
+                oi_setWheels(-150, 150);
             }
 
             //If the character is 'd', turn right
             else if (uart_data == 'd') {
-                oi_setWheels(-50, 50);
+                oi_setWheels(150, -150);
+            }
+
+            //If the character is 'r', auto go
+            else if (uart_data == 'r') {
+                oi_setWheels(150, 150);
+                timer_waitMillis(5000);
+                oi_setWheels(0, 0);
+           int objs = oneEightyScan();
+
+           //If objs is 1, a objective is found, if 2, first object was found
+           if (objs) {
+               lcd_printf("OBJECTIVE FOUND!");
+               lcd_home();
+               uart_sendStr("\n\rLocated objective");
+           }
+           else if (objs == 2) {
+               lcd_printf("Located object.");
+               lcd_home();
+               uart_sendStr("\n\rLocated object");
+               }
+           }
+
+            //If the character is 'f', turn right 90
+            else if (uart_data == 'f') {
+                oi_setWheels(-400, 400);
+                timer_waitMillis(500);
+                oi_setWheels(0, 0);
+            }
+
+            //If the character is 'g', turn left 90
+            else if (uart_data == 'g') {
+                oi_setWheels(400, -400);
+                timer_waitMillis(500);
+                oi_setWheels(0, 0);
             }
 
             //If the character is 'm', stop the bot and do a 180 degree scan
@@ -155,11 +188,12 @@ int main(void) {
             }
 
 //            else if (uart_data == 'o') {
-//                oi_loadSong(IMERPIAL_MARCH, 19, 19, 19);
+//                  oi_loadSong(MARIO_UNDERWATER, 65, 65, 65);
+//                  oi_play_song(MARIO_UNDERWATER);
 //
 //                lcd_printf("EVIL CYBOT!");
 //                lcd_home();
-//                uart_sendStr("\n\rSong Playing");
+//               uart_sendStr("\n\rSong Playing");
 //            }
 
             //If any other key is pressed, stop the bot and do nothing
@@ -247,7 +281,7 @@ int oneEightyScan() {
     int distVal = 70;
 
     //Scan loop for 180 degrees
-    for (i = 0; i <= 180; i += 2) {
+    for (i = 0; i <= 180; i += 5) {
         servo_move(i);
 
         //Give bot time to turn
