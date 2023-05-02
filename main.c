@@ -6,6 +6,7 @@
 #include "open_interface.h"
 #include "Timer.h"
 #include "uart_extra_help.h"
+#include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <inc/tm4c123gh6pm.h>
@@ -117,12 +118,12 @@ int main(void) {
 
             //If the character is 'w', drive forward
             if (uart_data == 'w') {
-                oi_setWheels(250, 250);
+                oi_setWheels(150, 150);
             }
 
             //If the character is 's', drive backwards
             else if (uart_data == 's') {
-                oi_setWheels(-200, -200);
+                oi_setWheels(-150, -150);
             }
 
             //If the character is 'a', turn left
@@ -138,7 +139,7 @@ int main(void) {
             //If the character is 'r', auto go
             else if (uart_data == 'r') {
                 oi_setWheels(150, 150);
-                timer_waitMillis(5000);
+                timer_waitMillis(3000);
                 oi_setWheels(0, 0);
            int objs = oneEightyScan();
 
@@ -261,6 +262,8 @@ int oneEightyScan() {
     int i;
     int objectTypes = 0; //0 is no object, 1 is single object, 2 is a group of objects
     int objectCounts = 0;
+    char angle[100];
+    char distance[100];
 
     //Values for displaying data
     char start[] = "Degrees\t\tDistance (cm)\n\r";
@@ -281,7 +284,7 @@ int oneEightyScan() {
     int distVal = 70;
 
     //Scan loop for 180 degrees
-    for (i = 0; i <= 180; i += 5) {
+    for (i = 0; i <= 180; i += 1) {
         servo_move(i);
 
         //Give bot time to turn
@@ -349,6 +352,14 @@ int oneEightyScan() {
         sprintf(layout, "%d\t\t%d\t\t%0.2f\t\t%d\t\t%0.2f\t%c\n\r", objectArr[i].object, objectArr[i].mid_angle, objectArr[i].ping_distance, objectArr[i].adc_distance, objectArr[i].linear_width, objectArr[i].type);
         uart_sendStr(layout);
     }
+
+    for (i = 0; i < objectCount; i++) {
+        sprintf(angle,"\na%d\n", objectArr[i].mid_angle);
+        sprintf(distance,"d%0.2f\n", objectArr[i].ping_distance);
+        uart_sendStr(angle);
+        uart_sendStr(distance);
+        }
+
 
     return objectTypes;
 }
