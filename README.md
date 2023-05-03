@@ -9,11 +9,11 @@ To run:
 3. Open app.py in VS Code and run the program
 
 Controls:
-'W' Move Foward
-'S' Move Backwards
-'A' Turn Counterclockwise
-'D' Turn Clockwise
-'F' Turn 90° Counterclockwise
-'G' Turn 90° Clockwise
-'M' Start Scan Function
-'L' Surprise!
+1.'W' Move Foward
+2.'S' Move Backwards
+3.'A' Turn Counterclockwise
+4.'D' Turn Clockwise
+4.'F' Turn 90° Counterclockwise
+5.'G' Turn 90° Clockwise
+6.'M' Start Scan Function
+7.'L' Surprise!
