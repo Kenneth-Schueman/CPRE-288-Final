@@ -59,6 +59,8 @@ int main(void) {
     servo_init();
     ping_init();
 
+    sound_load_marchTheme();
+
     while (1) {
         oi_update(sensor_data);
 
@@ -128,46 +130,31 @@ int main(void) {
 
             //If the character is 'a', turn left
             else if (uart_data == 'a') {
-                oi_setWheels(-150, 150);
+                oi_setWheels(150, -150);
             }
 
             //If the character is 'd', turn right
             else if (uart_data == 'd') {
-                oi_setWheels(150, -150);
+                oi_setWheels(-150, 150);
             }
 
-            //If the character is 'r', auto go
-            else if (uart_data == 'r') {
-                oi_setWheels(150, 150);
-                timer_waitMillis(3000);
-                oi_setWheels(0, 0);
-           int objs = oneEightyScan();
 
-           //If objs is 1, a objective is found, if 2, first object was found
-           if (objs) {
-               lcd_printf("OBJECTIVE FOUND!");
-               lcd_home();
-               uart_sendStr("\n\rLocated objective");
-           }
-           else if (objs == 2) {
-               lcd_printf("Located object.");
-               lcd_home();
-               uart_sendStr("\n\rLocated object");
-               }
-           }
-
-            //If the character is 'f', turn right 90
+            //If the character is 'f', turn left 90
             else if (uart_data == 'f') {
+                oi_setWheels(400, -400);
+                timer_waitMillis(500);
+                oi_setWheels(0, 0);
+            }
+
+            //If the character is 'g', turn right 90
+            else if (uart_data == 'g') {
                 oi_setWheels(-400, 400);
                 timer_waitMillis(500);
                 oi_setWheels(0, 0);
             }
 
-            //If the character is 'g', turn left 90
-            else if (uart_data == 'g') {
-                oi_setWheels(400, -400);
-                timer_waitMillis(500);
-                oi_setWheels(0, 0);
+            else if (uart_data == 'l') {
+                sound_play_marchTheme();
             }
 
             //If the character is 'm', stop the bot and do a 180 degree scan
@@ -262,8 +249,7 @@ int oneEightyScan() {
     int i;
     int objectTypes = 0; //0 is no object, 1 is single object, 2 is a group of objects
     int objectCounts = 0;
-    char angle[100];
-    char distance[100];
+    char python[100];
 
     //Values for displaying data
     char start[] = "Degrees\t\tDistance (cm)\n\r";
@@ -284,7 +270,7 @@ int oneEightyScan() {
     int distVal = 70;
 
     //Scan loop for 180 degrees
-    for (i = 0; i <= 180; i += 1) {
+    for (i = 0; i <= 180; i += 2) {
         servo_move(i);
 
         //Give bot time to turn
@@ -354,12 +340,9 @@ int oneEightyScan() {
     }
 
     for (i = 0; i < objectCount; i++) {
-        sprintf(angle,"\na%d\n", objectArr[i].mid_angle);
-        sprintf(distance,"d%0.2f\n", objectArr[i].ping_distance);
-        uart_sendStr(angle);
-        uart_sendStr(distance);
-        }
-
+        sprintf(python,"\n!%d!%0.2f!%c\n\r", objectArr[i].mid_angle, objectArr[i].ping_distance, objectArr[i].type);
+        uart_sendStr(python);
+    }
 
     return objectTypes;
 }
